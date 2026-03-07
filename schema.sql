@@ -43,3 +43,21 @@ CREATE TABLE skills (
     skill_name VARCHAR(100) NOT NULL
 );
 
+-- BOOKINGS TABLE
+CREATE TABLE bookings (
+    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    artisan_id INT NOT NULL,
+    service_date DATE,
+    status ENUM('pending','accepted','completed','cancelled')
+           DEFAULT 'pending',
+
+    FOREIGN KEY (customer_id)
+        REFERENCES customers(customer_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (artisan_id)
+        REFERENCES artisans(artisan_id)
+        ON DELETE CASCADE
+);
+
