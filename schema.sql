@@ -37,4 +37,9 @@ CREATE TABLE customers (
         ON DELETE CASCADE
 );
 
+-- SKILLS TABLE
+CREATE TABLE skills (
+    skill_id INT AUTO_INCREMENT PRIMARY KEY,
+    skill_name VARCHAR(100) NOT NULL
+);
 
