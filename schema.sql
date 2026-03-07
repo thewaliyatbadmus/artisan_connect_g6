@@ -61,3 +61,15 @@ CREATE TABLE bookings (
         ON DELETE CASCADE
 );
 
+-- REVIEWS TABLE
+CREATE TABLE reviews (
+    review_id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,
+    rating INT,
+    comment TEXT,
+
+    FOREIGN KEY (booking_id)
+        REFERENCES bookings(booking_id)
+        ON DELETE CASCADE
+);
+
