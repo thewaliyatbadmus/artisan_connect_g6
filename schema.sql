@@ -12,3 +12,16 @@ CREATE TABLE users (
     role ENUM('artisan','customer') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+-- ARTISANS TABLE
+CREATE TABLE artisans (
+    artisan_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    location VARCHAR(100),
+    availability VARCHAR(50),
+    experience INT,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+);
+
