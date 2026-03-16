@@ -1,0 +1,178 @@
+
+.artisan-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: var(--shadow-sm);
+}
+.artisan-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-hover);
+}
+
+.artisan-card-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--primary-light);
+}
+.artisan-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.artisan-card:hover .artisan-card-img { transform: scale(1.04); }
+
+.artisan-avail-dot {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2.5px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.artisan-avail-dot.available { background: #22c55e; }
+.artisan-avail-dot.busy      { background: #ef4444; }
+
+.artisan-card-body { padding: 1rem; }
+.artisan-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.artisan-skill-tag {
+  display: inline-block;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 50px;
+  white-space: nowrap;
+}
+
+.artisan-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.star-rating { display: flex; gap: 1px; }
+.rating-num  { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+.rating-count { font-size: 0.75rem; color: var(--text-light); }
+
+.artisan-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+}
+
+.artisan-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.85rem;
+}
+.artisan-location {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.artisan-exp {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.artisan-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.artisan-rate {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+.btn-sm-card {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.78rem;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Horizontal Card ─────────────────────────────── */
+.artisan-card-h {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+.artisan-card-h:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-hover);
+}
+
+.artisan-card-h-img-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.artisan-card-h-img {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-light);
+}
+.artisan-card-h .artisan-avail-dot {
+  bottom: 4px;
+  right: 4px;
+}
+
+.artisan-card-h-body { flex: 1; min-width: 0; }
+.artisan-card-h-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.artisan-card-h-actions {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+.artisan-card-h-actions .btn {
+  font-size: 0.84rem;
+  padding: 0.55rem 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .artisan-card-h { flex-direction: column; }
+  .artisan-card-h-img { width: 70px; height: 70px; }
+  .artisan-card-h-actions .btn { flex: 1; }
+}
