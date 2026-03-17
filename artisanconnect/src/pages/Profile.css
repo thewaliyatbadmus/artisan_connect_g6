@@ -1,8 +1,8 @@
-
+/* pages/Profile.css */
 
 .profile-page { min-height: 100vh; }
 
-
+/* ── Cover ────────────────────────────────────────── */
 .profile-cover {
   position: relative;
   height: 240px;
@@ -198,7 +198,7 @@
   color: var(--text);
 }
 .contact-row:last-child { border-bottom: none; }
-.contact-icon { font-size: 1rem; }
+.contact-icon { display: flex; align-items: center; color: var(--primary); flex-shrink: 0; }
 
 /* Portfolio */
 .portfolio-grid {

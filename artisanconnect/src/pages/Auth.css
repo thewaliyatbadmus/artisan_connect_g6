@@ -1,0 +1,478 @@
+.auth-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.auth-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.auth-side-visual {
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-visual-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.auth-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(15,69,48,0.88) 0%, rgba(26,107,74,0.75) 100%);
+  z-index: 1;
+}
+
+.auth-visual-content {
+  position: relative;
+  z-index: 2;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+}
+
+.auth-visual-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2.5rem;
+  position: absolute;
+  top: 2.5rem;
+  left: 2.5rem;
+}
+
+.auth-visual-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  margin-top: 4rem;
+}
+
+.auth-visual-sub {
+  color: rgba(255,255,255,0.8);
+  font-size: 1rem;
+  line-height: 1.65;
+  margin-bottom: 2rem;
+}
+
+.auth-visual-stats {
+  display: flex;
+  gap: 2rem;
+}
+
+.auth-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.auth-stat-n {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.auth-stat-l {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.65);
+  font-weight: 500;
+}
+
+.auth-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.auth-perk {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255,255,255,0.9);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.auth-perk-icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.auth-form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #fff;
+  overflow-y: auto;
+}
+
+.auth-form-wrap {
+  width: 100%;
+  max-width: 440px;
+  padding: 1rem 0;
+}
+
+.auth-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.83rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 2rem;
+  transition: color 0.15s;
+}
+
+.auth-back-btn:hover {
+  color: var(--primary);
+}
+
+.auth-header {
+  margin-bottom: 1.75rem;
+}
+
+.auth-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+
+.auth-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+.input-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0.85rem;
+  color: var(--text-light);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.input-icon-wrap input {
+  padding-left: 2.5rem !important;
+}
+
+.pass-toggle {
+  position: absolute;
+  right: 0.85rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.pass-toggle:hover {
+  color: var(--primary);
+}
+
+.label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.label-row label {
+  margin-bottom: 0 !important;
+}
+
+.forgot-link {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  transition: color 0.15s;
+}
+
+.forgot-link:hover {
+  color: var(--primary-dark);
+}
+
+.pass-strength {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.pass-strength-bar {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.pass-strength-seg {
+  height: 3px;
+  flex: 1;
+  border-radius: 2px;
+  transition: background 0.25s;
+}
+
+.auth-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+  color: #dc2626;
+  font-size: 0.83rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.auth-submit {
+  padding: 0.8rem !important;
+  font-size: 0.95rem !important;
+  margin-top: 0.5rem;
+  gap: 8px;
+}
+
+.auth-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem 0;
+  color: var(--text-light);
+  font-size: 0.82rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.auth-switch {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.auth-switch-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.auth-switch-btn:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .auth-split {
+    grid-template-columns: 1fr;
+  }
+  .auth-side-visual {
+    display: none;
+  }
+  .auth-form-side {
+    padding: 2rem 1.25rem;
+    min-height: 100vh;
+    align-items: flex-start;
+    padding-top: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+  .auth-title {
+    font-size: 1.4rem;
+  }
+}
+
+/* ─── Role Selector (Signup Step 1) ─────────────── */
+.role-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.role-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.role-card:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.role-card.active {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(26,107,74,0.12);
+}
+
+.role-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.role-icon-customer {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.role-icon-artisan {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.role-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.role-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.role-card-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.role-card-arrow {
+  color: var(--text-light);
+  transition: color 0.15s, transform 0.15s;
+  flex-shrink: 0;
+}
+
+.role-card:hover .role-card-arrow {
+  color: var(--primary);
+  transform: translateX(4px);
+}
+
+/* ─── Role Badge (Step 2 header) ─────────────────── */
+.role-badge-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 50px;
+  margin-bottom: 0.6rem;
+}
+
+/* ─── Artisan Extra Fields Section ───────────────── */
+.artisan-extra-fields {
+  background: var(--primary-light);
+  border: 1.5px solid #a7f3d0;
+  border-radius: var(--radius);
+  padding: 1.1rem 1.1rem 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.artisan-fields-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.85rem;
+}

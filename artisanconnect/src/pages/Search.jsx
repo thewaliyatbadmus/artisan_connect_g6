@@ -1,6 +1,6 @@
+// pages/Search.jsx
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
-
 import { ArtisanCardH } from '../components/ArtisanCard';
 import { artisans } from '../data/artisans';
 import './Search.css';
@@ -13,10 +13,11 @@ export default function Search({ initialQuery, onViewProfile, onBook }) {
   const [minRating, setRating]  = useState('');
   const [results, setResults]   = useState(artisans);
 
+  // Apply initial query filter from categories/hero
   useEffect(() => {
     if (initialQuery) {
       setQuery(initialQuery);
-     
+      // Check if it matches a skill category
       const found = artisans.find(a => a.skill.toLowerCase() === initialQuery.toLowerCase());
       if (found) setSkill(initialQuery);
     }
@@ -44,7 +45,7 @@ export default function Search({ initialQuery, onViewProfile, onBook }) {
   return (
     <div className="search-page">
 
-      {}
+      {/* Top Bar */}
       <div className="search-topbar">
         <div className="container">
           <h1 className="search-topbar-title">Find Artisans</h1>
@@ -52,7 +53,7 @@ export default function Search({ initialQuery, onViewProfile, onBook }) {
         </div>
       </div>
 
-      {}
+      {/* Filters */}
       <div className="filters-bar">
         <div className="container filters-inner">
           <select value={skill} onChange={e => setSkill(e.target.value)} className="filter-select">
@@ -104,7 +105,9 @@ export default function Search({ initialQuery, onViewProfile, onBook }) {
           </div>
         ) : (
           <div className="no-results">
-            <div className="no-results-icon">🔍</div>
+            <div className="no-results-icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
             <h3>No artisans found</h3>
             <p>Try changing your search term or clearing the filters.</p>
             <button className="btn btn-primary" onClick={clearFilters}>Clear All Filters</button>

@@ -1,4 +1,6 @@
+/* pages/Home.css */
 
+/* ── Hero ─────────────────────────────────────────── */
 .hero {
   background: linear-gradient(135deg, #0a2e1e 0%, var(--primary-dark) 40%, var(--primary) 80%, var(--primary-mid) 100%);
   padding: 4rem 1.5rem 5rem;
@@ -21,7 +23,9 @@
   flex: 1;
 }
 .hero-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: rgba(255,255,255,0.15);
   color: rgba(255,255,255,0.9);
   font-size: 0.8rem;

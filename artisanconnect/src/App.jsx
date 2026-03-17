@@ -4,6 +4,9 @@ import BookingModal from './components/BookingModal';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import Profile from './pages/Profile';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';
 import { artisans } from './data/artisans';
 
 export default function App() {
@@ -13,6 +16,8 @@ export default function App() {
   const [searchQuery, setSearchQuery]     = useState('');
   const [toastMsg, setToastMsg]           = useState('');
   const [toastVisible, setToastVisible]   = useState(false);
+  const [user, setUser]                   = useState(null);
+  const [newBookings, setNewBookings]     = useState([]);
   const toastTimer = useRef(null);
 
   const showToast = (msg) => {
@@ -33,6 +38,15 @@ export default function App() {
   };
 
   const openBooking = (artisan) => {
+    if (!user) {
+      showToast('Please log in or sign up to book an artisan.');
+      navigate('login');
+      return;
+    }
+    if (user.role === 'artisan') {
+      showToast('Artisan accounts cannot place bookings.');
+      return;
+    }
     if (!artisan.available) {
       showToast(`${artisan.name} is currently busy. Try again later.`);
       return;
@@ -45,11 +59,30 @@ export default function App() {
     navigate('search');
   };
 
+  const handleLogin = (userData) => {
+    setUser(userData);
+    navigate('dashboard');
+    const greeting = userData.role === 'artisan'
+      ? `Welcome, ${userData.name.split(' ')[0]}! Your artisan profile is ready.`
+      : `Welcome, ${userData.name.split(' ')[0]}!`;
+    showToast(greeting);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    navigate('home');
+    showToast('You have been logged out.');
+  };
+
+  const handleBooked = (booking) => {
+    setNewBookings(prev => [booking, ...prev]);
+    showToast('Booking request sent successfully!');
+  };
+
   return (
     <div className="app">
-      <Navbar currentPage={currentPage} onNavigate={navigate} />
+      <Navbar currentPage={currentPage} onNavigate={navigate} user={user} onLogout={handleLogout} />
 
-      {/* Pages */}
       {currentPage === 'home' && (
         <Home
           onNavigate={navigate}
@@ -76,15 +109,31 @@ export default function App() {
         />
       )}
 
-      {/* Booking Modal */}
+      {currentPage === 'login' && (
+        <Login onNavigate={navigate} onLogin={handleLogin} />
+      )}
+
+      {currentPage === 'signup' && (
+        <Signup onNavigate={navigate} onLogin={handleLogin} />
+      )}
+
+      {currentPage === 'dashboard' && (
+        <Dashboard
+          user={user}
+          onNavigate={navigate}
+          onLogout={handleLogout}
+          newBookings={newBookings}
+        />
+      )}
+
       {bookingArtisan && (
         <BookingModal
           artisan={bookingArtisan}
           onClose={() => setBookingArtisan(null)}
+          onBooked={handleBooked}
         />
       )}
 
-      {/* Toast */}
       <div className={`toast ${toastVisible ? 'show' : ''}`}>{toastMsg}</div>
     </div>
   );

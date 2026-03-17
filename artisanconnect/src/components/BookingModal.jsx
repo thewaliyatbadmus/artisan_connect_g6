@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-export default function BookingModal({ artisan, onClose }) {
+export default function BookingModal({ artisan, onClose, onBooked }) {
   const [date, setDate]       = useState('');
   const [service, setService] = useState('General Repair');
+  const [phone, setPhone]     = useState('');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError]     = useState('');
@@ -11,8 +12,22 @@ export default function BookingModal({ artisan, onClose }) {
 
   const handleSubmit = () => {
     if (!date) { setError('Please select a service date.'); return; }
+    if (!phone) { setError('Please enter your phone number.'); return; }
+    if (!/^\+?[\d\s\-]{9,15}$/.test(phone)) { setError('Enter a valid phone number.'); return; }
     setError('');
     setSubmitted(true);
+    if (onBooked) {
+      onBooked({
+        id: Date.now(),
+        artisan: artisan.name,
+        skill: artisan.skill,
+        date,
+        service,
+        phone,
+        status: 'Pending',
+        photo: artisan.photo,
+      });
+    }
   };
 
   const formatted = date
@@ -27,7 +42,6 @@ export default function BookingModal({ artisan, onClose }) {
           Send Booking Request
         </div>
 
-        {}
         <div className="modal-artisan-info">
           <img
             src={artisan.photo}
@@ -60,6 +74,19 @@ export default function BookingModal({ artisan, onClose }) {
               </select>
             </div>
             <div className="form-group">
+              <label>Your Phone Number *</label>
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <svg style={{ position: 'absolute', left: '0.85rem', color: 'var(--text-light)', pointerEvents: 'none' }} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.09 6.09l1.79-1.79a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <input
+                  type="tel"
+                  placeholder="+250 7XX XXX XXX"
+                  value={phone}
+                  onChange={e => { setPhone(e.target.value); setError(''); }}
+                  style={{ paddingLeft: '2.5rem' }}
+                />
+              </div>
+            </div>
+            <div className="form-group">
               <label>Your Message</label>
               <textarea
                 value={message}
@@ -77,10 +104,16 @@ export default function BookingModal({ artisan, onClose }) {
           </>
         ) : (
           <div className="success-banner">
-            <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✅</div>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.75rem' }}>
+              <div style={{ width: 52, height: 52, background: '#d1fae5', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#065f46" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
             <strong>Booking request sent!</strong><br/>
             Your request has been sent to <strong>{artisan.name}</strong> for <strong>{formatted}</strong>.<br/>
-            <span style={{ color: '#065f46', fontSize: '0.82rem' }}>They will contact you at your registered phone number shortly.</span>
+            <span style={{ color: '#065f46', fontSize: '0.82rem' }}>
+              The artisan will contact you on <strong>{phone}</strong> shortly.
+            </span>
             <div style={{ marginTop: '1rem' }}>
               <button className="btn btn-primary" style={{ width: '100%' }} onClick={onClose}>Done</button>
             </div>
