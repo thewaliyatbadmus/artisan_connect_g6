@@ -1,4 +1,3 @@
-// pages/Home.jsx
 import React, { useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import { ArtisanCard } from '../components/ArtisanCard';
@@ -17,7 +16,7 @@ export default function Home({ onNavigate, onFilterSearch, onViewProfile, onBook
   return (
     <div className="home-page">
 
-      {/* ── Hero ── */}
+      {}
       <section className="hero">
         <div className="hero-content fade-up">
           <span className="hero-badge">
@@ -48,7 +47,7 @@ export default function Home({ onNavigate, onFilterSearch, onViewProfile, onBook
         </div>
         <div className="hero-img-wrap fade-up fade-up-2">
           <img
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=700&fit=crop&crop=faces"
+            src="https://github.com/thewaliyatbadmus/artisan_connect_g6/blob/main/artisanconnect/portrait-smiling-african-american-female-plumber-holding-wrench-screwdriver-kitchen-african-american-female-423760474.webp"
             alt="Skilled artisan at work"
             className="hero-img"
             onError={e => { e.target.src = 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&h=700&fit=crop'; }}
@@ -74,7 +73,7 @@ export default function Home({ onNavigate, onFilterSearch, onViewProfile, onBook
         </div>
       </section>
 
-      {/* ── Stats Bar ── */}
+      {}
       <div className="stats-bar">
         <div className="container">
           <div className="stats-inner">
@@ -89,7 +88,7 @@ export default function Home({ onNavigate, onFilterSearch, onViewProfile, onBook
         </div>
       </div>
 
-      {/* ── Categories ── */}
+      {}
       <section className="section">
         <div className="container">
           <h2 className="section-heading">Popular <span>Categories</span></h2>
