@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import BookingModal from './components/BookingModal';
 import Home from './pages/Home';
@@ -8,6 +9,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import { artisans } from './data/artisans';
+import CreateProfile from "./pages/CreateProfile";
+
 
 export default function App() {
   const [currentPage, setCurrentPage]     = useState('home');
@@ -35,6 +38,14 @@ export default function App() {
   const viewProfile = (id) => {
     setProfileId(id);
     navigate('profile');
+  };
+
+  const viewUserProfile = () => {
+    if (!user) {
+      showToast('Please log in to view your profile.');
+      return;
+    }
+    navigate('user-profile');
   };
 
   const openBooking = (artisan) => {
@@ -79,6 +90,11 @@ export default function App() {
     showToast('Booking request sent successfully!');
   };
 
+  const handleUpdateProfile = (updatedData) => {
+    setUser(prev => ({ ...prev, ...updatedData }));
+    showToast('Profile updated successfully!');
+  };
+
   return (
     <div className="app">
       <Navbar currentPage={currentPage} onNavigate={navigate} user={user} onLogout={handleLogout} />
@@ -121,8 +137,23 @@ export default function App() {
         <Dashboard
           user={user}
           onNavigate={navigate}
+          onViewProfile={viewUserProfile}
           onLogout={handleLogout}
           newBookings={newBookings}
+        />
+      )}
+
+      {currentPage === 'create-profile' && (
+        <CreateProfile onBack={() => navigate('dashboard')} />
+      )}
+
+      {currentPage === 'user-profile' && (
+        <Profile
+          user={user}
+          isOwnProfile={true}
+          onBack={() => navigate('dashboard')}
+          onBook={openBooking}
+          onUpdateProfile={handleUpdateProfile}
         />
       )}
 
@@ -133,6 +164,7 @@ export default function App() {
           onBooked={handleBooked}
         />
       )}
+ 
 
       <div className={`toast ${toastVisible ? 'show' : ''}`}>{toastMsg}</div>
     </div>
