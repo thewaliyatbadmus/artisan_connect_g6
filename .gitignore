@@ -1,6 +1,8 @@
+
 node_modules/.cache/
 start-servers.sh
 start-backend.sh
 artisanconnect/frontend.log
 backend/.gitignore
 node_modules
+.env

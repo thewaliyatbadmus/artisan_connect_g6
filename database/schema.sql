@@ -2,7 +2,6 @@ DROP DATABASE IF EXISTS artisan_connect;
 CREATE DATABASE artisan_connect;
 USE artisan_connect;
 
--- USERS TABLE
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(100) NOT NULL,
@@ -12,22 +11,21 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ARTISANS TABLE
 CREATE TABLE artisans (
     artisan_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    skill VARCHAR(100),
-    hourly_rate DECIMAL(10,2) DEFAULT 0,
     location VARCHAR(100),
-    availability VARCHAR(50) DEFAULT 'Available',
-    experience INT DEFAULT 0,
+    availability VARCHAR(50),
+    experience INT,
+    skill VARCHAR(100),
+    hourly_rate DECIMAL(10, 2),
     phone VARCHAR(20),
+    bio TEXT,
     FOREIGN KEY (user_id)
         REFERENCES users(user_id)
         ON DELETE CASCADE
 );
 
--- CUSTOMERS TABLE
 CREATE TABLE customers (
     customer_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -37,13 +35,11 @@ CREATE TABLE customers (
         ON DELETE CASCADE
 );
 
--- SKILLS TABLE
 CREATE TABLE skills (
     skill_id INT AUTO_INCREMENT PRIMARY KEY,
     skill_name VARCHAR(100) NOT NULL
 );
 
--- BOOKINGS TABLE
 CREATE TABLE bookings (
     booking_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT NOT NULL,
@@ -58,7 +54,6 @@ CREATE TABLE bookings (
         ON DELETE CASCADE
 );
 
--- REVIEWS TABLE
 CREATE TABLE reviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
     booking_id INT NOT NULL,
