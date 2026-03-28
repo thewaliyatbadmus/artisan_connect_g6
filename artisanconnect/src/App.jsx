@@ -7,6 +7,7 @@ import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
+import CreateProfile from './pages/CreateProfile';
 import { artisans } from './data/artisans';
 
 export default function App() {
@@ -115,6 +116,10 @@ export default function App() {
 
       {currentPage === 'signup' && (
         <Signup onNavigate={navigate} onLogin={handleLogin} />
+      )}
+
+      {currentPage === 'create-profile' && (
+        <CreateProfile onNavigate={navigate} />
       )}
 
       {currentPage === 'dashboard' && (

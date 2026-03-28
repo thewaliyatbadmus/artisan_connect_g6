@@ -111,10 +111,31 @@ export default function Dashboard({ user, onNavigate, onLogout, newBookings }) {
                 </div>
               </div>
             </div>
-            <span className="badge badge-green apb-badge">
-              <span style={{ width: 7, height: 7, background: '#10b981', borderRadius: '50%', display: 'inline-block' }} />
-              Active
-            </span>
+            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+              <button
+                style={{
+                  padding: '0.5rem 1rem',
+                  background: '#1a6b4a',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '0.375rem',
+                  fontSize: '0.85rem',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+                onClick={() => onNavigate('create-profile')}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M12 5v14M5 12h14"/></svg>
+                Edit Profile
+              </button>
+              <span className="badge badge-green apb-badge">
+                <span style={{ width: 7, height: 7, background: '#10b981', borderRadius: '50%', display: 'inline-block' }} />
+                Active
+              </span>
+            </div>
           </div>
         )}
 
