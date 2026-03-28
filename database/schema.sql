@@ -20,6 +20,8 @@ CREATE TABLE artisans (
     location VARCHAR(100),
     availability VARCHAR(50),
     experience INT,
+    skill VARCHAR(100),
+    hourly_rate DECIMAL(10, 2),
 
     FOREIGN KEY (user_id)
         REFERENCES users(user_id)
