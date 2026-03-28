@@ -8,17 +8,27 @@ export default function Login({ onNavigate, onLogin }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) { setError('Please fill in all fields.'); return; }
     if (!/\S+@\S+\.\S+/.test(email)) { setError('Enter a valid email address.'); return; }
     setError('');
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.message || 'Login failed'); setLoading(false); return; }
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      onLogin(data.user);
+    } catch (err) {
+      setError('Cannot connect to server. Make sure backend is running.');
       setLoading(false);
-      const name = email.split('@')[0].replace(/[^a-zA-Z]/g, ' ').trim() || 'User';
-      onLogin({ name, email });
-    }, 900);
+    }
   };
 
   return (
@@ -37,20 +47,11 @@ export default function Login({ onNavigate, onLogin }) {
               <span style={{ color: '#fff', fontWeight: 700, fontSize: '1.2rem' }}>ArtisanConnect</span>
             </div>
             <h2 className="auth-visual-title">Connect with Rwanda's Finest Artisans</h2>
-            <p className="auth-visual-sub">Book skilled professionals quickly and easily — plumbers, electricians, tailors and more.</p>
+            <p className="auth-visual-sub">Book skilled professionals quickly and easily – plumbers, electricians, tailors and more.</p>
             <div className="auth-visual-stats">
-              <div className="auth-stat">
-                <span className="auth-stat-n">200+</span>
-                <span className="auth-stat-l">Artisans</span>
-              </div>
-              <div className="auth-stat">
-                <span className="auth-stat-n">1,200+</span>
-                <span className="auth-stat-l">Jobs Done</span>
-              </div>
-              <div className="auth-stat">
-                <span className="auth-stat-n">4.8★</span>
-                <span className="auth-stat-l">Avg Rating</span>
-              </div>
+              <div className="auth-stat"><span className="auth-stat-n">200+</span><span className="auth-stat-l">Artisans</span></div>
+              <div className="auth-stat"><span className="auth-stat-n">1,200+</span><span className="auth-stat-l">Jobs Done</span></div>
+              <div className="auth-stat"><span className="auth-stat-n">4.8★</span><span className="auth-stat-l">Avg Rating</span></div>
             </div>
           </div>
         </div>
@@ -109,9 +110,7 @@ export default function Login({ onNavigate, onLogin }) {
               {error && <div className="auth-error">{error}</div>}
 
               <button type="submit" className="btn btn-primary btn-full auth-submit" disabled={loading}>
-                {loading ? (
-                  <span className="auth-spinner" />
-                ) : (
+                {loading ? <span className="auth-spinner" /> : (
                   <>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                     Sign In
@@ -121,7 +120,6 @@ export default function Login({ onNavigate, onLogin }) {
             </form>
 
             <div className="auth-divider"><span>or</span></div>
-
             <p className="auth-switch">
               Don't have an account?{' '}
               <button className="auth-switch-btn" onClick={() => onNavigate('signup')}>Create one free</button>

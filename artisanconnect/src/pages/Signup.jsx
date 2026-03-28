@@ -12,14 +12,9 @@ export default function Signup({ onNavigate, onLogin }) {
   const [loading, setLoading] = useState(false);
 
   const update = (k, v) => { setForm(f => ({ ...f, [k]: v })); setError(''); };
+  const handleRoleSelect = (r) => { setRole(r); setStep(2); setError(''); };
 
-  const handleRoleSelect = (r) => {
-    setRole(r);
-    setStep(2);
-    setError('');
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.phone || !form.password || !form.confirm) {
       setError('Please fill in all required fields.'); return;
@@ -35,38 +30,39 @@ export default function Signup({ onNavigate, onLogin }) {
     }
     setError('');
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          password: form.password,
+          role,
+          profession: form.profession,
+          rate: form.rate,
+          location: form.location
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.message || 'Signup failed'); setLoading(false); return; }
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      onLogin(data.user);
+    } catch (err) {
+      setError('Cannot connect to server. Make sure backend is running.');
       setLoading(false);
-      onLogin({ name: form.name, email: form.email, phone: form.phone, role, profession: form.profession, rate: form.rate, location: form.location });
-    }, 900);
+    }
   };
 
   const strength = form.password.length === 0 ? 0 : form.password.length < 6 ? 1 : form.password.length < 10 ? 2 : 3;
   const strengthLabel = ['', 'Weak', 'Good', 'Strong'];
   const strengthColor = ['', '#ef4444', '#f59e0b', '#10b981'];
-
-  const visualTitle = role === 'artisan'
-    ? 'Grow Your Business with ArtisanConnect'
-    : 'Find Trusted Artisans Near You';
-
-  const visualSub = role === 'artisan'
-    ? 'Reach more customers across Rwanda. Register your skills and start getting booked today.'
-    : 'Create your free account and start booking skilled artisans in your area today.';
-
-  const artisanPerks = [
-    { text: 'Get discovered by customers near you' },
-    { text: 'Manage bookings in one place' },
-    { text: 'Build your professional reputation' },
-    { text: 'Free to join, no hidden fees' },
-  ];
-
-  const customerPerks = [
-    { text: 'Instant booking requests' },
-    { text: 'Track all your bookings' },
-    { text: 'Verified & rated artisans' },
-    { text: '100% free for customers' },
-  ];
-
+  const visualTitle = role === 'artisan' ? 'Grow Your Business with ArtisanConnect' : 'Find Trusted Artisans Near You';
+  const visualSub = role === 'artisan' ? 'Reach more customers across Rwanda. Register your skills and start getting booked today.' : 'Create your free account and start booking skilled artisans in your area today.';
+  const artisanPerks = [{ text: 'Get discovered by customers near you' }, { text: 'Manage bookings in one place' }, { text: 'Build your professional reputation' }, { text: 'Free to join, no hidden fees' }];
+  const customerPerks = [{ text: 'Instant booking requests' }, { text: 'Track all your bookings' }, { text: 'Verified & rated artisans' }, { text: '100% free for customers' }];
   const perks = role === 'artisan' ? artisanPerks : customerPerks;
 
   return (
@@ -114,13 +110,8 @@ export default function Signup({ onNavigate, onLogin }) {
                   <h1 className="auth-title">Create your account</h1>
                   <p className="auth-subtitle">Who are you joining as?</p>
                 </div>
-
                 <div className="role-selector">
-                  <button
-                    className={`role-card ${role === 'customer' ? 'active' : ''}`}
-                    onClick={() => handleRoleSelect('customer')}
-                    type="button"
-                  >
+                  <button className={`role-card ${role === 'customer' ? 'active' : ''}`} onClick={() => handleRoleSelect('customer')} type="button">
                     <div className="role-card-icon role-icon-customer">
                       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     </div>
@@ -128,16 +119,9 @@ export default function Signup({ onNavigate, onLogin }) {
                       <span className="role-card-title">I'm a Customer</span>
                       <span className="role-card-sub">I want to hire skilled artisans</span>
                     </div>
-                    <div className="role-card-arrow">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                    </div>
+                    <div className="role-card-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                   </button>
-
-                  <button
-                    className={`role-card ${role === 'artisan' ? 'active' : ''}`}
-                    onClick={() => handleRoleSelect('artisan')}
-                    type="button"
-                  >
+                  <button className={`role-card ${role === 'artisan' ? 'active' : ''}`} onClick={() => handleRoleSelect('artisan')} type="button">
                     <div className="role-card-icon role-icon-artisan">
                       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                     </div>
@@ -145,27 +129,17 @@ export default function Signup({ onNavigate, onLogin }) {
                       <span className="role-card-title">I'm an Artisan</span>
                       <span className="role-card-sub">I want to offer my skills & get hired</span>
                     </div>
-                    <div className="role-card-arrow">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                    </div>
+                    <div className="role-card-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                   </button>
                 </div>
-
                 <div className="auth-divider"><span>or</span></div>
-                <p className="auth-switch">
-                  Already have an account?{' '}
-                  <button className="auth-switch-btn" onClick={() => onNavigate('login')}>Sign in</button>
-                </p>
+                <p className="auth-switch">Already have an account?{' '}<button className="auth-switch-btn" onClick={() => onNavigate('login')}>Sign in</button></p>
               </>
             ) : (
               <>
                 <div className="auth-header">
                   <div className="role-badge-inline">
-                    {role === 'artisan' ? (
-                      <><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Registering as Artisan</>
-                    ) : (
-                      <><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Registering as Customer</>
-                    )}
+                    {role === 'artisan' ? (<><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Registering as Artisan</>) : (<><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Registering as Customer</>)}
                   </div>
                   <h1 className="auth-title">Your details</h1>
                   <p className="auth-subtitle">Fill in your information to create your account</p>
@@ -240,26 +214,15 @@ export default function Signup({ onNavigate, onLogin }) {
                       <label>Password *</label>
                       <div className="input-icon-wrap">
                         <svg className="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        <input
-                          type={showPass ? 'text' : 'password'}
-                          placeholder="Min. 6 characters"
-                          value={form.password}
-                          onChange={e => update('password', e.target.value)}
-                        />
+                        <input type={showPass ? 'text' : 'password'} placeholder="Min. 6 characters" value={form.password} onChange={e => update('password', e.target.value)} />
                         <button type="button" className="pass-toggle" onClick={() => setShowPass(v => !v)}>
-                          {showPass ? (
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                          ) : (
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                          )}
+                          {showPass ? (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>) : (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>)}
                         </button>
                       </div>
                       {form.password.length > 0 && (
                         <div className="pass-strength">
                           <div className="pass-strength-bar">
-                            {[1,2,3].map(n => (
-                              <div key={n} className="pass-strength-seg" style={{ background: strength >= n ? strengthColor[strength] : 'var(--border)' }} />
-                            ))}
+                            {[1,2,3].map(n => (<div key={n} className="pass-strength-seg" style={{ background: strength >= n ? strengthColor[strength] : 'var(--border)' }} />))}
                           </div>
                           <span style={{ color: strengthColor[strength], fontSize: '0.75rem', fontWeight: 600 }}>{strengthLabel[strength]}</span>
                         </div>
@@ -277,9 +240,7 @@ export default function Signup({ onNavigate, onLogin }) {
                   {error && <div className="auth-error">{error}</div>}
 
                   <button type="submit" className="btn btn-primary btn-full auth-submit" disabled={loading}>
-                    {loading ? (
-                      <span className="auth-spinner" />
-                    ) : (
+                    {loading ? <span className="auth-spinner" /> : (
                       <>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
                         Create {role === 'artisan' ? 'Artisan' : 'Customer'} Account
@@ -289,10 +250,7 @@ export default function Signup({ onNavigate, onLogin }) {
                 </form>
 
                 <div className="auth-divider"><span>or</span></div>
-                <p className="auth-switch">
-                  Already have an account?{' '}
-                  <button className="auth-switch-btn" onClick={() => onNavigate('login')}>Sign in</button>
-                </p>
+                <p className="auth-switch">Already have an account?{' '}<button className="auth-switch-btn" onClick={() => onNavigate('login')}>Sign in</button></p>
               </>
             )}
           </div>
